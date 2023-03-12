@@ -1,0 +1,8 @@
+{
+    "configuration": "cpu=atmega168",
+    "board": "arduino:avr:nano",
+    "programmer": "usbasp",
+    "port": "COM4",
+    "sketch": "Tacho.ino",
+    "output": ".\\build"
+}
