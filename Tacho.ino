@@ -68,31 +68,36 @@
 
 /* Delay helpers. */
 
-void delayPosition() {
+void delayPosition()
+{
 	if (POSITION_DELAY > 0)
 		delay(POSITION_DELAY);
 }
 
-void delayDigit() {
+void delayDigit()
+{
 	if (DIGIT_DELAY > 0)
 		delay(DIGIT_DELAY);
 }
 
-void delayTest() {
+void delayTest()
+{
 	if (TEST_DELAY > 0)
 		delay(TEST_DELAY);
 }
 
 /* Clearing helpers. */
 
-void clearPositions() {
+void clearPositions()
+{
 	digitalWrite(POS_1, POS_OFF);
 	digitalWrite(POS_2, POS_OFF);
 	digitalWrite(POS_3, POS_OFF);
 	digitalWrite(POS_4, POS_OFF);
 }
 
-void clearDigit() {
+void clearDigit()
+{
 	digitalWrite(SEG_A, SEG_OFF);
 	digitalWrite(SEG_B, SEG_OFF);
 	digitalWrite(SEG_C, SEG_OFF);
@@ -106,14 +111,16 @@ void clearDigit() {
 
 /* Display helpers. */
 
-void selectPosition(byte pos) {
+void selectPosition(byte pos)
+{
 	// Clear current selected position.
 	clearDigit();
 	// Turns all positions off.
 	clearPositions();
 
 	// And only now switch to requested one.
-	switch (pos) {
+	switch (pos)
+  {
 		case 1:
 			digitalWrite(POS_1, POS_ON);
 			break;
@@ -134,17 +141,20 @@ void selectPosition(byte pos) {
 	delayPosition();
 }
 
-void togglePoint(bool show) {
+void togglePoint(bool show)
+{
 	digitalWrite(SEG_P, show ? SEG_ON : SEG_OFF);
 	delayDigit();
 }
 
-void displayDigit(byte pos, byte dig, bool point) {
+void displayDigit(byte pos, byte dig, bool point)
+{
 	// Select digit position first.
 	selectPosition(pos);
 
 	// Now display the digit.
-	switch (dig) {
+	switch (dig)
+  {
 		case 0:
 			digitalWrite(SEG_A, SEG_ON);
 			digitalWrite(SEG_B, SEG_ON);
@@ -228,7 +238,8 @@ void displayDigit(byte pos, byte dig, bool point) {
 	togglePoint(point);
 }
 
-void displaySign(byte pos) {
+void displaySign(byte pos)
+{
 	selectPosition(pos);
 	digitalWrite(SEG_G, SEG_ON);
 	delayDigit();
@@ -236,7 +247,8 @@ void displaySign(byte pos) {
 
 /* Latters. */
 
-void displayH(byte pos) {
+void displayH(byte pos)
+{
 	selectPosition(pos);
 
 	digitalWrite(SEG_B, SEG_ON);
@@ -248,7 +260,8 @@ void displayH(byte pos) {
 	togglePoint(false);
 }
 
-void displayI(byte pos) {
+void displayI(byte pos)
+{
 	selectPosition(pos);
 
 	digitalWrite(SEG_B, SEG_ON);
@@ -257,7 +270,8 @@ void displayI(byte pos) {
 	togglePoint(false);
 }
 
-void displayG(byte pos) {
+void displayG(byte pos)
+{
 	selectPosition(pos);
 
 	digitalWrite(SEG_A, SEG_ON);
@@ -269,7 +283,8 @@ void displayG(byte pos) {
 	togglePoint(false);
 }
 
-void displayHigh() {
+void displayHigh()
+{
 	displayH(4);
 	displayI(3);
 	displayG(2);
@@ -278,7 +293,8 @@ void displayHigh() {
 
 /* Setup */
 
-void setupPositionPins() {
+void setupPositionPins()
+{
 	pinMode(POS_1, OUTPUT);
 	pinMode(POS_2, OUTPUT);
 	pinMode(POS_3, OUTPUT);
@@ -287,7 +303,8 @@ void setupPositionPins() {
 	clearPositions();
 }
 
-void setupDigitPins() {
+void setupDigitPins()
+{
 	pinMode(SEG_A, OUTPUT);
 	pinMode(SEG_B, OUTPUT);
 	pinMode(SEG_C, OUTPUT);
@@ -300,50 +317,59 @@ void setupDigitPins() {
 	clearDigit();
 }
 
-void setupSensorPins() {
+void setupSensorPins()
+{
 	pinMode(SENSE_PIN, INPUT);
 
 	attachInterrupt(SENSE_INT, intCount, RISING);
 }
 
-void testDisplay() {
+void testDisplay()
+{
 	// Signs
-	for (byte pos = 1; pos < 5; pos++) {
+	for (byte pos = 1; pos < 5; pos++)
+  {
 		displaySign(pos);
 		delayTest();
 	}
-	for (byte pos = 3; pos > 0; pos--) {
+	for (byte pos = 3; pos > 0; pos--)
+  {
 		displaySign(pos);
 		delayTest();
 	}
 
 	// Points
-	for (byte pos = 1; pos < 5; pos++) {
+	for (byte pos = 1; pos < 5; pos++)
+  {
 		selectPosition(pos);
 		togglePoint(true);
 		delayTest();
 	}
-	for (byte pos = 3; pos > 0; pos--) {
+	for (byte pos = 3; pos > 0; pos--)
+  {
 		selectPosition(pos);
 		togglePoint(true);
 		delayTest();
 	}
 
 	// Show all eights
-	for (byte pos = 1; pos < 5; pos++) {
+	for (byte pos = 1; pos < 5; pos++)
+  {
 		displayDigit(pos, 8, false);
 		delayTest();
 	}
-	for (byte pos = 3; pos > 0; pos--) {
+	for (byte pos = 3; pos > 0; pos--)
+  {
 		displayDigit(pos, 8, false);
 		delayTest();
 	}
 }
 
-void setup() {
+void setup()
+{
 	Serial.begin(115200);
 
-  	setupPositionPins();
+  setupPositionPins();
 	setupDigitPins();
 
 	testDisplay();
@@ -353,8 +379,10 @@ void setup() {
 
 /* Main program. */
 
-void displayRPM(unsigned short rpm) {
-	switch (rpm) {
+void displayRPM(unsigned short rpm)
+{
+	switch (rpm)
+  {
 		case ZERO_RPM:
 			displayDigit(1, 0, false);
 			break;
@@ -370,7 +398,8 @@ void displayRPM(unsigned short rpm) {
 			
 		default:
 			byte pos = 1;
-			while (rpm > 0) {
+			while (rpm > 0)
+			{
 				byte dig = rpm % 10;
 				rpm = rpm / 10;
 				displayDigit(pos, dig, false);
@@ -387,7 +416,8 @@ volatile bool RpmPing = false;
 // Current measure RPM.
 volatile unsigned int CurrentRpm = 0;
 
-void loop() {
+void loop()
+{
 	// Ticks when RPM data was last received.
 	static unsigned long lastRpmPing;
 	// Ticks when RPM was sets to zero.
@@ -404,21 +434,31 @@ void loop() {
 
 	if (!RpmDetected)
 		rpm = NO_RPM;
-	else {
-		if (RpmPing) {
+	else
+  {
+		if (RpmPing)
+    {
 			RpmPing = false;
 			lastRpmPing = millis();
 			zeroRpmDetected = false;
-		} else {
-			if (CurrentRpm == 0) {
-				if (!zeroRpmDetected) {
+		}
+    else
+    {
+			if (CurrentRpm == 0)
+      {
+				if (!zeroRpmDetected)
+        {
 					zeroRpmDetected = true;
 					lastZeroRpm = millis();
-				} else {
+				}
+        else
+        {
 					if (millis() - lastZeroRpm >= ZERO_RPM_DELAY)
 						RpmDetected = false;
 				}
-			} else {
+			}
+      else
+      {
 				if (millis() - lastRpmPing > RPM_PING_DELAY)
 					CurrentRpm = 0;
 			}
@@ -432,10 +472,11 @@ void loop() {
 
 	if (millis() - lastUpdate < UPDATE_RATE)
 		rpm = lastRpm;
-	 else {
+	else
+  {
 		lastRpm = rpm;
 		lastUpdate = millis();
-	 }
+	}
 
 	displayRPM(rpm);
 }
